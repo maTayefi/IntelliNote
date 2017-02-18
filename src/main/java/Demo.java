@@ -39,6 +39,9 @@ import com.evernote.edam.type.Resource;
 import com.evernote.edam.type.ResourceAttributes;
 import com.evernote.edam.type.Tag;
 import com.evernote.thrift.transport.TTransportException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class Demo {
 
@@ -151,9 +154,24 @@ public class Demo {
             NoteList noteList = noteStore.findNotes(filter, 0, 100);
             List<Note> notes = noteList.getNotes();
             for (Note note : notes) {
-                System.out.println("---------------------");
-                System.out.println(" * " + note.getTitle());
-                System.out.println(" * " + noteStore.getNoteContent(note.getGuid()));
+                if(note.getTitle().equals("Thesis")){
+                    System.out.println("NNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOTTTTTTTTTTTTEEEEEEEEEEE");
+                    System.out.println(" *t " + note.getTitle());
+                    String noteContent=noteStore.getNoteContent(note.getGuid());
+                    System.out.println(" *c " + noteContent);
+                    Document doc = Jsoup.parse(noteContent);
+                    if(doc.select("div").first()!=null){
+                        Element link = doc.select("div").first();
+                        String text = doc.text();
+                        String linkHref = link.attr("href"); // "http://example.com/"
+                        String linkText = link.text(); // "example"";
+                        System.out.println("linkHref"+linkHref);
+                        System.out.println("linkText"+linkText);
+                    }
+
+                    System.out.println("EEEEEEENNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDNNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOTTTTTTTTTTTTEEEEEEEEEEE");
+                }
+
             }
         }
         System.out.println();
