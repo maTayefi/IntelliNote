@@ -158,10 +158,10 @@ public class Demo {
                     System.out.println("NNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOTTTTTTTTTTTTEEEEEEEEEEE");
                     System.out.println(" *t " + note.getTitle());
                     String noteContent=noteStore.getNoteContent(note.getGuid());
-                    System.out.println(" *c " + noteContent);
+                    //System.out.println(" *c " + noteContent);
                     Document doc = Jsoup.parse(noteContent);
-                    if(doc.select("div").first()!=null){
-                        Element link = doc.select("div").first();
+                    if(doc.select("en-note").first()!=null){
+                        Element link = doc.select("en-note").first();
                         String text = doc.text();
                         String linkHref = link.attr("href"); // "http://example.com/"
                         String linkText = link.text(); // "example"";
