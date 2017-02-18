@@ -165,8 +165,24 @@ public class Demo {
                         String text = doc.text();
                         String linkHref = link.attr("href"); // "http://example.com/"
                         String linkText = link.text(); // "example"";
-                        System.out.println("linkHref"+linkHref);
-                        System.out.println("linkText"+linkText);
+                        System.out.println("linkHref "+linkHref);
+                        System.out.println("linkText "+linkText);
+
+                        linkHref = link.attr("span"); // "http://example.com/"
+                        linkText = link.text(); // "example"";
+                        System.out.println("linkSpan "+linkHref);
+                        System.out.println("linkText "+linkText);
+
+                        linkHref = link.attr("a"); // "http://example.com/"
+                        linkText = link.toString(); // "example"";
+                        System.out.println("linkSpan "+linkHref);
+                        System.out.println("linkToString "+linkText);
+
+                        Element link2 = doc.select("a").last();
+                        linkHref = link2.text(); // "example"";
+                        linkText = link2.toString(); // "example"";
+                        System.out.println("linkSpan "+linkHref);
+                        System.out.println("linkToString "+linkText);
                     }
 
                     System.out.println("EEEEEEENNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDNNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOTTTTTTTTTTTTEEEEEEEEEEE");
