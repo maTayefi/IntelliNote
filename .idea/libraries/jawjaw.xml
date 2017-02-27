@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jawjaw">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jawjaw.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jawjaw.jar!/" />
+    </SOURCES>
+  </library>
+</component>
