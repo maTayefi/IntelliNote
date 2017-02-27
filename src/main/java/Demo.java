@@ -42,6 +42,7 @@ import com.evernote.thrift.transport.TTransportException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class Demo {
 
@@ -63,10 +64,12 @@ public class Demo {
     private NoteStoreClient noteStore;
     private String newNoteGuid;
 
+
     /**
      * Console entry point.
      */
     public static void main(String args[]) throws Exception {
+
         String token = AUTH_TOKEN;
         //System.getenv("AUTH_TOKEN");
         if (token == null) {
@@ -183,6 +186,15 @@ public class Demo {
                         linkText = link2.toString(); // "example"";
                         System.out.println("linkSpan "+linkHref);
                         System.out.println("linkToString "+linkText);
+
+                        System.out.println("//////////////////////////////");
+
+                        Elements select_a_s= doc.select("a");
+                        String elementText;
+                        for(int i=0; i< select_a_s.size();i++){
+                            elementText=select_a_s.get(i).text();
+                            System.out.println(elementText);
+                        }
                     }
 
                     System.out.println("EEEEEEENNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDNNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOTTTTTTTTTTTTEEEEEEEEEEE");

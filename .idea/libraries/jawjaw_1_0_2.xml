@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="jawjaw-1.0.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ws4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jawjaw.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jawjaw.jar!/" />
+    </SOURCES>
+  </library>
+</component>
