@@ -294,11 +294,11 @@ public class StemWord{
 	    }
 	    FacetField.Count check = tempList.get(i);
 	    String tempString = check.toString();
-			
-	    String a = tempString.substring(0, tempString.indexOf(" "));
-	    String b = tempString.substring(tempString.indexOf(" ") + 2,
+		String a = tempString.substring(0, tempString.indexOf(" "));
+	    String b = tempString.substring(tempString.length()-2,
 					    tempString.length() - 1);
-			
+
+		System.out.println("tempSttring "+tempString.substring(tempString.length()-7,tempString.length() - 1));
 	    if (a.matches("^[a-zA-Z]+$")) {
 		if (training){
 		    // add that to neighbors map

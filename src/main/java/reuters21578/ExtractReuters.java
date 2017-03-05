@@ -20,16 +20,17 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrServerException;
 //import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 
 /**
  * Split the Reuters SGML documents into Simple Text files containing: Title,
@@ -39,7 +40,7 @@ public class ExtractReuters {
 	private File reutersDir;
 	
 	private SolrClient server;
-
+	List<SolrInputDocument> docs;
 	/*
 	 * private File outputDir; private static final String LINE_SEPARATOR =
 	 * System .getProperty("line.separator");
@@ -136,7 +137,7 @@ public class ExtractReuters {
 			int docNumber = 0;
 			SolrInputDocument document = null;
 
-			List<SolrInputDocument> docs = new ArrayList<>();
+			docs = new ArrayList<>();
 			int count  = 0;
 			while ((line = reader.readLine()) != null) {
 				// when we see a closing reuters tag, flush the file
@@ -155,7 +156,7 @@ public class ExtractReuters {
 							String head[] = header.split("=");
 							document.addField(head[0],
 									head[1].replace("\"", ""));
-							System.out.println(header);
+							//System.out.println("+++HEADER: "+header);
 						}
 
 					}
@@ -171,8 +172,8 @@ public class ExtractReuters {
 									String field = string.substring(
 											string.indexOf("<") + 1,
 											string.indexOf(">")).trim();
-									System.out.println(field + "  : "
-											+ matcher.group(i));
+									//System.out.println("**FIELD1 "+field + "  : "
+										//	+ matcher.group(i));
 									document.addField(field, matcher.group(i));
 
 								}
@@ -190,7 +191,7 @@ public class ExtractReuters {
 									String field = string.substring(
 											string.indexOf("<") + 1,
 											string.indexOf(">")).trim();
-									System.out.println(field + "  : " + text);
+									//System.out.println("**FIELD2 "+field + "  : " + text);
 									if (text != null && !text.trim().isEmpty()) {
 										List<String> values = new ArrayList<>();
 
@@ -200,8 +201,8 @@ public class ExtractReuters {
 													.groupCount(); j++) {
 												if (mat.group(j) != null) {
 
-													System.out.println(mat
-															.group(j));
+													//System.out.println("**MATJ "+mat
+													//		.group(j));
 													values.add(mat.group(j));
 												}
 											}
@@ -215,54 +216,54 @@ public class ExtractReuters {
 					}
 
 					//add
+					//System.out.println("--------------------Document--------------------: "+document.toString());
 					docs.add(document);
 					count++;
 					if(count == 500) {
-						server.add(docs);
-						server.commit();
-						docs.clear();
+						////server.add(docs);
+						////server.commit();
+						////docs.clear();
 						count = 0;
 						
 					}
 					buffer = new StringBuilder(10024);
-					System.out.println();
+					//System.out.println();
 				}
 			}
 				if(!docs.isEmpty()) {
-				server.add(docs);
-				server.commit();
+				////server.add(docs);
+				////server.commit();
 			}
 			
 			reader.close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		////catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			////e.printStackTrace();
+		////}
 	}
 
-	public static void main(String[] args) {
-		if (args.length != 1) {
-			usage("Wrong number of arguments (" + args.length + ")");
-			return;
-		}
-		File reutersDir = new File(args[0]);
-		if (!reutersDir.exists()) {
-			usage("Cannot find Path to Reuters SGM files (" + reutersDir + ")");
-			return;
-		}
 
-		/*
-		 * // First, extract to a tmp directory and only if everything succeeds,
-		 * // rename // to output directory. File outputDir = new File(args[1]);
-		 * outputDir = new File(outputDir.getAbsolutePath() + "-tmp");
-		 * outputDir.mkdirs();
-		 */
-		ExtractReuters extractor = new ExtractReuters(reutersDir);
-		extractor.extract();
-		// Now rename to requested output dir
-		// outputDir.renameTo(new File(args[1]));
+	public Collection<String> getBodies(){
+		Collection<String> textString=new ArrayList<String>();
+		System.out.println(docs.size());
+		int i=0;
+		int j=0;
+		for(SolrInputDocument solrInputDocument:docs){
+			//System.out.println(solrInputDocument.toString())
+			if(solrInputDocument.getFieldNames().contains("BODY")){
+				textString.add(solrInputDocument.getField("BODY").toString().substring(5));
+				i++;
+			}
+			else if(solrInputDocument.getFieldNames().contains("TITLE")){
+				textString.add(solrInputDocument.getField("TITLE").toString().substring(6));
+				j++;
+			}
+		}
+		System.out.println(i+" "+j);
+		return textString;
 	}
 
 	private static void usage(String msg) {
