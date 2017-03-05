@@ -246,23 +246,20 @@ public class ExtractReuters {
 	}
 
 
-	public Collection<String> getBodies(){
-		Collection<String> textString=new ArrayList<String>();
+	public ArrayList<String> getBodies(){
+		ArrayList<String> textString=new ArrayList<String>();
 		System.out.println(docs.size());
-		int i=0;
-		int j=0;
+		//int docNo=0;
 		for(SolrInputDocument solrInputDocument:docs){
-			//System.out.println(solrInputDocument.toString())
 			if(solrInputDocument.getFieldNames().contains("BODY")){
-				textString.add(solrInputDocument.getField("BODY").toString().substring(5));
-				i++;
+                textString.add(solrInputDocument.getField("BODY").toString().substring(5));
 			}
-			else if(solrInputDocument.getFieldNames().contains("TITLE")){
-				textString.add(solrInputDocument.getField("TITLE").toString().substring(6));
-				j++;
-			}
+			/*else if(solrInputDocument.getFieldNames().contains("TITLE")){
+				docNo++;
+			    textString.add(solrInputDocument.getField("TITLE").toString().substring(6));
+                System.out.println(solrInputDocument.getField("TITLE"));
+            }*/
 		}
-		System.out.println(i+" "+j);
 		return textString;
 	}
 

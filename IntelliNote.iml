@@ -17,7 +17,7 @@
     <orderEntry type="library" name="solr" level="project" />
     <orderEntry type="library" name="Maven: com.evernote:evernote-api:1.25.1" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.10.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.opennlp:opennlp-tools:1.7.3-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.opennlp:opennlp-tools:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-tdb:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-arq:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-core:3.2.0" level="project" />
@@ -55,5 +55,7 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-jdk14:1.7.24" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-analyzers:3.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:3.6.2" level="project" />
   </component>
 </module>
