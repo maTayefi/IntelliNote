@@ -1,5 +1,5 @@
 import Model.Document;
-import org.apache.jena.sparql.algebra.Op;
+//import org.apache.jena.sparql.algebra.Op;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -21,7 +21,6 @@ public class IntelliNote {
     public static void main(String[] args) throws IOException {
         File reutersDir = new File("D:\\Thesis\\IntelliNote\\src\\main\\resources\\reuters-21578\\data");
 
-
 		/*
 		 * // First, extract to a tmp directory and only if everything succeeds,
 		 * // rename // to output directory. File outputDir = new File(args[1]);
@@ -33,21 +32,19 @@ public class IntelliNote {
         // Now rename to requested output dir
         // outputDir.renameTo(new File(args[1]));
         ArrayList<String> texts=extractor.getBodies();
-        System.out.println(texts.toString());
+        //System.out.println(texts.toString());
         OpenNLPUtil openNLPUtil=new OpenNLPUtil();
 
         for(String doc:texts){
             Document document=new Document();
             document.setSimpleText(doc);
             document.setSentences(openNLPUtil.SentenceDetect(doc));
-            System.out.println("++++++++++++++++++++++++++++++++++");
+            System.out.println("++++++++++++++++++++++++++++++++++DOC");
             System.out.println(doc);
-            System.out.println("---------------");
+            System.out.println("----------------------------------SENTENCES");
             System.out.println(Arrays.toString(document.getSentences()));
-            System.out.println("++++++++++++++++++++++++++++++++++");
+            System.out.println("***********************END");
         }
-
-
 
         final String test = "This is a test. How about that?! Huh?";
         StringReader reader = new StringReader(test);
@@ -66,9 +63,6 @@ public class IntelliNote {
         }
         tokenizer.end();
         tokenizer.close();
-
-
-
 
     }
 

@@ -12,7 +12,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>LATEST</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -24,78 +24,78 @@
         <dependency>
             <groupId>com.evernote</groupId>
             <artifactId>evernote-api</artifactId>
-            <version>1.25.1</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.opennlp</groupId>
             <artifactId>opennlp-tools</artifactId>
-            <version>1.7.2</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>apache-jena-libs</artifactId>
             <type>pom</type>
-            <version>3.2.0</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
-            <version>1.0.4</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20160810</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.5.3</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.noggit</groupId>
             <artifactId>noggit</artifactId>
-            <version>0.7</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.24</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.24</version>
-        </dependency>
+            <version>LATEST</version>
+        </dependency><!--
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.24</version>
-        </dependency>
-        <dependency>
+            <version>LATEST</version>
+        </dependency>-->
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.24</version>
-        </dependency>
-        <dependency>
+            <version>LATEST</version>
+        </dependency>-->
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.24</version>
-        </dependency>
+            <version>LATEST</version>
+        </dependency>-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.1</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers</artifactId>
-            <version>3.6.2</version>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
     <developers>

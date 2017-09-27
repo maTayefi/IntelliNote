@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.lucene:lucene-analyzers:3.6-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/lucene/lucene-analyzers/3.6-SNAPSHOT/lucene-analyzers-3.6-20120411.140249-34.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/lucene/lucene-analyzers/3.6-SNAPSHOT/lucene-analyzers-3.6-20120411.140249-34-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/lucene/lucene-analyzers/3.6-SNAPSHOT/lucene-analyzers-3.6-20120411.140249-34-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.httpcomponents:httpclient:4.4-beta2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.4-beta2-SNAPSHOT/httpclient-4.4-beta2-20141019.201211-14.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.4-beta2-SNAPSHOT/httpclient-4.4-beta2-20141019.201211-14-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.4-beta2-SNAPSHOT/httpclient-4.4-beta2-20141019.201211-14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
