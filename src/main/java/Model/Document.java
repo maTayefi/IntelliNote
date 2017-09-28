@@ -21,6 +21,16 @@ public class Document {
     }
 
     String simpleText;
+    String afterStopWordRemoval;
+
+    public String getAfterStopWordRemoval() {
+        return afterStopWordRemoval;
+    }
+
+    public void setAfterStopWordRemoval(String afterStopWordRemoval) {
+        this.afterStopWordRemoval = afterStopWordRemoval;
+    }
+
     String[] sentences;
     public Document(){
         simpleText="";
