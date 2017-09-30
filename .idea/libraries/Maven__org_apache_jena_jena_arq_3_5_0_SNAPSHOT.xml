@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.jena:jena-arq:3.5.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-arq/3.5.0-SNAPSHOT/jena-arq-3.5.0-20170929.172916-19.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-arq/3.5.0-SNAPSHOT/jena-arq-3.5.0-20170929.172916-19-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jena/jena-arq/3.5.0-SNAPSHOT/jena-arq-3.5.0-20170929.172916-19-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

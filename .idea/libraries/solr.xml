@@ -2,9 +2,14 @@
   <library name="solr">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/lib/solr" />
+      <root url="file://$PROJECT_DIR$/lib" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/lib/solr" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

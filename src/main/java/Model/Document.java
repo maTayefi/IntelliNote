@@ -1,9 +1,14 @@
 package Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by maTayefi on 3/5/2017.
  */
 public class Document {
+    private String simpleText;
+    private ArrayList sentences = null;
+
     public String getSimpleText() {
         return simpleText;
     }
@@ -12,28 +17,23 @@ public class Document {
         this.simpleText = simpleText;
     }
 
-    public String[] getSentences() {
-        return sentences;
+
+    public Document() {
+        simpleText = "";
+        sentences = null;
     }
 
-    public void setSentences(String[] sentences) {
+
+    public Document(ArrayList sentences) {
         this.sentences = sentences;
     }
 
-    String simpleText;
-    String afterStopWordRemoval;
 
-    public String getAfterStopWordRemoval() {
-        return afterStopWordRemoval;
+    public ArrayList<Sentence> getSentences() {
+        return sentences;
     }
 
-    public void setAfterStopWordRemoval(String afterStopWordRemoval) {
-        this.afterStopWordRemoval = afterStopWordRemoval;
+    public void setSentences(ArrayList<Sentence> sentences) {
+        this.sentences = sentences;
     }
-
-    String[] sentences;
-    public Document(){
-        simpleText="";
-        sentences=null;
-    }
- }
+}
