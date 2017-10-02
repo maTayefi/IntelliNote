@@ -20,19 +20,19 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.util.Version;
 import reuters21578.ExtractReuters;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by maTayefi on 3/5/2017.
  */
-public class IntelliNote {
+public class IntelliNote{
 
     private static RelatednessCalculator rc;
+
+    private static final Logger fLogger = Logger.getLogger("My Logger");
 
     public static void main(String[] args) throws IOException, InvalidDataException {
         File reutersDir = new File("D:\\Thesis\\IntelliNote\\src\\main\\resources\\reuters-21578\\data");
@@ -64,7 +64,10 @@ public class IntelliNote {
         TokenizerModel tokenModel = new TokenizerModel(inputStream);
         TokenizerME tokenizer = new TokenizerME(tokenModel);
 
-        for (String doc : texts) {
+        ArrayList<Document> documents=new ArrayList<>();
+        int currentSize=50;
+        ArrayList<String> subTexts= new ArrayList<String>(texts.subList(0,currentSize-1));
+        for (String doc : subTexts) {
             Document document = new Document();
             document.setSimpleText(doc);
             ArrayList<Sentence> sentences=new ArrayList<>();
@@ -73,10 +76,9 @@ public class IntelliNote {
                 ArrayList<Token> tokens=new ArrayList<>();
                 String tokensOriginal[] = tokenizer.tokenize(sentenceT);
                 String[] tags = tagger.tag(tokensOriginal);
-                System.out.println("tags: "+ Arrays.toString(tags));
+                //System.out.println("tags: "+ Arrays.toString(tags));
                 POSSample sample = new POSSample(tokensOriginal, tags);
-                System.out.println("POS Tags:"+sample.toString());
-                //save tags
+                //System.out.println("POS Tags:"+sample.toString());
 
                 String withoutStopWordsSntnc = ExudeData.getInstance().filterStoppingsKeepDuplicates(sentenceT);
                 //System.out.println("||||||||||||||||||||||||||||||| After StopWord Removal:" + "\n" + output);
@@ -85,12 +87,17 @@ public class IntelliNote {
 
                 int indexInOriginalTokens=0;
                 int indexInCleanTokens=0;
-                System.out.println("tokensOriginal"+Arrays.toString(tokensOriginal));
-                System.out.println("tokensClean"+Arrays.toString(tokensClean));
+                //&lt age lt too clean ha bood igonresh kone va bere soraghe ba'di
+                //System.out.println("tokensOriginal"+Arrays.toString(tokensOriginal));
+                //System.out.println("tokensClean"+Arrays.toString(tokensClean));
                 for(String tokenS:tokensClean){
                     String toCheck=tokensOriginal[indexInOriginalTokens];
                     if(tokenS.equals(toCheck.toLowerCase())){
                         Token token=new Token(tokenS,sNo,indexInCleanTokens,tags[indexInOriginalTokens]);
+
+                        indexInOriginalTokens++;
+
+
                         tokens.add(token);
                     }
                     else{
@@ -109,6 +116,10 @@ public class IntelliNote {
                             Token token=new Token(tokenS,sNo,indexInCleanTokens,tags[indexInOriginalTokens]);
                             tokens.add(token);
                         }
+                        else if(tokenS.equals("lt")){
+                            //System.out.println("&lt");
+                            indexInOriginalTokens++;
+                        }
                         else System.out.println("not handled tokenS "+tokenS);
                     }
                     indexInCleanTokens++;
@@ -118,15 +129,108 @@ public class IntelliNote {
                 sNo++;
             }
             document.setSentences(sentences);
+            documents.add(document);
         }
-        //double loop for matrix and inside that cosine of similarities
 
-        //rc.calcRelatednessOfWords(nv1+"#n", nv2+"#n");
+        //int n;
+        Vector<Vector<Double>> vector=new Vector<Vector<Double>>();
+        vector.setSize(documents.size());
+        Set<String> distinctNonStpWrdsInTwoSntncs=new HashSet<String>();
+        System.out.println("docs size"+documents.size());
+        for(int i=0;i<documents.size();i++){
+            Vector<Double> vIn=new Vector<Double>();
+            vIn.setSize(documents.size());
+            vector.add(i,vIn);
+            for(int j=0;j<documents.size();j++){
+                //System.out.println(vector.toString());
+                if(i!=j){
+                    for(Sentence sentence:documents.get(i).getSentences()){
+                        for(Token token:sentence.getTokens())distinctNonStpWrdsInTwoSntncs.add(token.getWord());
+                    }
+                    for(Sentence sentence:documents.get(j).getSentences()){
+                        for(Token token:sentence.getTokens())distinctNonStpWrdsInTwoSntncs.add(token.getWord());
+                    }
+                    //n=distinctNonStpWrdsInTwoSntncs.size();
+                    List<String> distinctNonStpWrdsInTwoSntncsLST=new ArrayList<String>(distinctNonStpWrdsInTwoSntncs);
+                    boolean appears=false;
+                    OUTERMOST:for(Sentence sentence:documents.get(i).getSentences()){
+                        for(Token token:sentence.getTokens()){
+                            if(distinctNonStpWrdsInTwoSntncsLST.get(j).equals(token.getWord())){
+                                vector.get(i).add(j, (double) 1);
+                                appears=true;
+                                break OUTERMOST;
+                            }
+                        }
+                    }
+                    if(!appears){
+                        double maxScore=0;
+                        for(Sentence sentence:documents.get(i).getSentences()){
+                            for(Token token:sentence.getTokens()){
+                                char tag=token.getPOSTag().toLowerCase().charAt(0);
+                                if(token.getPOSTag().charAt(0)=='J')tag='a';
+                                else if(token.getPOSTag().equals("WRB"))tag='r';
+                                else if(tag!='n' && tag!='v' && tag!='a' && tag!='r') tag='n';
+                                double score=rc.calcRelatednessOfWords(token.getWord()+"#"+tag, distinctNonStpWrdsInTwoSntncsLST.get(j)+"#n");
+                                //if(score==0.0)System.out.println("zero "+token.getWord()+" "+token.getPOSTag()+" "+distinctNonStpWrdsInTwoSntncsLST.get(j)+" "+tag);
+                                if(score>maxScore)maxScore=score;
+                            }
+                        }
+                        vector.get(i).add(j, maxScore);
+                    }
+                }
+                //baraye har vector ba khodesh
+                else vector.get(i).add(j,1.0);
+            }
+        }
+        for(int i=0;i<subTexts.size()-1;i++){
+            System.out.println("begin "+i);
+            System.out.println(vector.get(i).size()+" "+vector.get(i).toString());
+        }
+        //alan bayad cosine similarity to be dast biyarim o berizim too ye matrix jadid o bedimesh be Fuzzy Algorithm
+        Double[][] similarities=new Double[currentSize-1][currentSize-1];
+        for(int i=0;i<currentSize-1;i++){
+            for(int j=0;j<currentSize-1;j++){
+                double[] s1=new double[currentSize];
+                double[] s2=new double[currentSize];
+                for(int k = 0; k < currentSize-1; k++) {
+                    if(vector.get(i).get(k)!=null) {
+                        s1[k] = vector.get(i).get(k);
+                    } else {
+                        System.out.println("null i "+i+" "+k);
+                        s1[k] = 0.0;
+                    }
+                    if(vector.get(j).get(k)!=null) {
+                        s2[k] = vector.get(j).get(k);
+                    } else {
+                        System.out.println("null j "+j+" "+k);
+                        s2[k] = 0.0;
+                    }
 
+                }
+                System.out.println(Arrays.toString(s1));
+                System.out.println(Arrays.toString(s2));
+                similarities[i][j]=cosineSimilarity(s1,s2);
+            }
+        }
+        for(int i=0;i<currentSize-1;i++){
+            for(int j=0;j<currentSize-1;j++){
+                System.out.println("Sim "+i+" "+j+" "+similarities[i][j]);
+            }
+        }
+        try (
+                OutputStreamWriter writer = new OutputStreamWriter(
+                        new FileOutputStream("SimMatrix.txt"), "UTF-8")
+                //OutputStream buffer = new BufferedOutputStream(writer);
+                //ObjectOutputStream output = new ObjectOutputStream(writer);
+        ){
+            writer.write(Arrays.deepToString(similarities));
+        }
+        catch(IOException ex){
+            fLogger.log(Level.SEVERE, "Cannot perform output.", ex);
+        }
  /*       final String test = "This is a test. How about that?! Huh?";
         StringReader reader = new StringReader(test);
         StandardTokenizer tokenizer = new StandardTokenizer(Version.LUCENE_36, reader);
-
 
         CharTermAttribute charTermAttrib = tokenizer.getAttribute(CharTermAttribute.class);
         TypeAttribute typeAtt = tokenizer.getAttribute(TypeAttribute.class);
@@ -141,6 +245,17 @@ public class IntelliNote {
         tokenizer.end();
         tokenizer.close();*/
 
+    }
+    public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        for (int i = 0; i < vectorA.length; i++) {
+            dotProduct += vectorA[i] * vectorB[i];
+            normA += Math.pow(vectorA[i], 2);
+            normB += Math.pow(vectorB[i], 2);
+        }
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
 }

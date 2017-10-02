@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.apache.opennlp:opennlp-tools:1.8.3-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20170930.115259-4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20171001.115336-5.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20170930.115259-4-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20171001.115336-5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20170930.115259-4-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/opennlp/opennlp-tools/1.8.3-SNAPSHOT/opennlp-tools-1.8.3-20171001.115336-5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
