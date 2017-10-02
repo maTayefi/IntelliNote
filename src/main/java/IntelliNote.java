@@ -35,6 +35,34 @@ public class IntelliNote{
     private static final Logger fLogger = Logger.getLogger("My Logger");
 
     public static void main(String[] args) throws IOException, InvalidDataException {
+        //read simmatrix
+        try {
+            Scanner s = new Scanner(new File("SimMatrix.txt"));
+            double simMatrix[][] = new double[459][459];
+            int row=0;
+            int column=-1;
+            while (s.hasNext()) {
+                String str=s.next();
+                if(str.contains("[")){
+                    column++;
+                    row=0;
+                }
+                str = str.replaceAll("[,\\[\\]]","");
+                System.out.println(str+"-"+column+"-"+row);
+                simMatrix[column][row] = Double.valueOf(str);
+                row++;
+            }
+            System.out.println(Arrays.deepToString(simMatrix));
+            s.close();
+            // At this point all dead cells are 0 and all live are 1
+        } catch (IOException i) {
+            System.out.println("Problems..");
+
+        }
+        MatlabConnector matlabConnector=new MatlabConnector();
+        //matlabConnector.runFRECCA();
+
+        System.exit(1);
         File reutersDir = new File("D:\\Thesis\\IntelliNote\\src\\main\\resources\\reuters-21578\\data");
 
 		/*
@@ -65,8 +93,8 @@ public class IntelliNote{
         TokenizerME tokenizer = new TokenizerME(tokenModel);
 
         ArrayList<Document> documents=new ArrayList<>();
-        int currentSize=50;
-        ArrayList<String> subTexts= new ArrayList<String>(texts.subList(0,currentSize-1));
+        int currentSize=texts.size();
+        ArrayList<String> subTexts= new ArrayList<>(texts.subList(0,currentSize-1));
         for (String doc : subTexts) {
             Document document = new Document();
             document.setSimpleText(doc);
@@ -133,12 +161,12 @@ public class IntelliNote{
         }
 
         //int n;
-        Vector<Vector<Double>> vector=new Vector<Vector<Double>>();
+        Vector<Vector<Double>> vector=new Vector<>();
         vector.setSize(documents.size());
-        Set<String> distinctNonStpWrdsInTwoSntncs=new HashSet<String>();
+        Set<String> distinctNonStpWrdsInTwoSntncs=new HashSet<>();
         System.out.println("docs size"+documents.size());
         for(int i=0;i<documents.size();i++){
-            Vector<Double> vIn=new Vector<Double>();
+            Vector<Double> vIn=new Vector<>();
             vIn.setSize(documents.size());
             vector.add(i,vIn);
             for(int j=0;j<documents.size();j++){
@@ -151,7 +179,7 @@ public class IntelliNote{
                         for(Token token:sentence.getTokens())distinctNonStpWrdsInTwoSntncs.add(token.getWord());
                     }
                     //n=distinctNonStpWrdsInTwoSntncs.size();
-                    List<String> distinctNonStpWrdsInTwoSntncsLST=new ArrayList<String>(distinctNonStpWrdsInTwoSntncs);
+                    List<String> distinctNonStpWrdsInTwoSntncsLST=new ArrayList<>(distinctNonStpWrdsInTwoSntncs);
                     boolean appears=false;
                     OUTERMOST:for(Sentence sentence:documents.get(i).getSentences()){
                         for(Token token:sentence.getTokens()){
@@ -182,9 +210,20 @@ public class IntelliNote{
                 else vector.get(i).add(j,1.0);
             }
         }
-        for(int i=0;i<subTexts.size()-1;i++){
+/*        for(int i=0;i<subTexts.size()-1;i++){
             System.out.println("begin "+i);
             System.out.println(vector.get(i).size()+" "+vector.get(i).toString());
+        }*/
+        try (
+                OutputStreamWriter writer = new OutputStreamWriter(
+                        new FileOutputStream("vector.txt"), "UTF-8")
+                //OutputStream buffer = new BufferedOutputStream(writer);
+                //ObjectOutputStream output = new ObjectOutputStream(writer);
+        ){
+            writer.write(String.valueOf(vector));
+        }
+        catch(IOException ex){
+            fLogger.log(Level.SEVERE, "Cannot perform output.", ex);
         }
         //alan bayad cosine similarity to be dast biyarim o berizim too ye matrix jadid o bedimesh be Fuzzy Algorithm
         Double[][] similarities=new Double[currentSize-1][currentSize-1];
@@ -207,16 +246,16 @@ public class IntelliNote{
                     }
 
                 }
-                System.out.println(Arrays.toString(s1));
-                System.out.println(Arrays.toString(s2));
+                //System.out.println(Arrays.toString(s1));
+                //System.out.println(Arrays.toString(s2));
                 similarities[i][j]=cosineSimilarity(s1,s2);
             }
         }
-        for(int i=0;i<currentSize-1;i++){
+/*        for(int i=0;i<currentSize-1;i++){
             for(int j=0;j<currentSize-1;j++){
                 System.out.println("Sim "+i+" "+j+" "+similarities[i][j]);
             }
-        }
+        }*/
         try (
                 OutputStreamWriter writer = new OutputStreamWriter(
                         new FileOutputStream("SimMatrix.txt"), "UTF-8")
@@ -246,7 +285,7 @@ public class IntelliNote{
         tokenizer.close();*/
 
     }
-    public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
+    private static double cosineSimilarity(double[] vectorA, double[] vectorB) {
         double dotProduct = 0.0;
         double normA = 0.0;
         double normB = 0.0;
