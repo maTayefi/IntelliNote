@@ -127,6 +127,11 @@
             <artifactId>exude</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>com.diffplug.matsim</groupId>
+            <artifactId>matconsolectl</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
     <developers>
         <developer>

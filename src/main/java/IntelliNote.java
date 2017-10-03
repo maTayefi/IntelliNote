@@ -2,12 +2,16 @@ import Model.Document;
 //import org.apache.jena.sparql.algebra.Op;
 import Model.Sentence;
 import Model.Token;
+import com.mathworks.engine.MatlabEngine;
 import com.uttesh.exude.ExudeData;
 import com.uttesh.exude.exception.InvalidDataException;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.cmu.lti.ws4j.RelatednessCalculator;
 import edu.cmu.lti.ws4j.impl.JiangConrath;
+import matlabcontrol.*;
+import measures.ClusterEvaluator;
+import measures.ContingencyTable;
 import opennlp.tools.cmdline.postag.POSModelLoader;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSSample;
@@ -34,33 +38,125 @@ public class IntelliNote{
 
     private static final Logger fLogger = Logger.getLogger("My Logger");
 
-    public static void main(String[] args) throws IOException, InvalidDataException {
-        //read simmatrix
+    public static void main(String[] args) throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException {
+        Double[][] resultMatrix=new Double[459][5];
         try {
-            Scanner s = new Scanner(new File("SimMatrix.txt"));
-            double simMatrix[][] = new double[459][459];
+            Scanner s = new Scanner(new File("answerForRueterswithN5.txt"));
+            int column=0;
             int row=0;
-            int column=-1;
-            while (s.hasNext()) {
-                String str=s.next();
-                if(str.contains("[")){
-                    column++;
-                    row=0;
+            while (s.hasNextDouble()) {
+                //System.out.println(str+"-"+column+"-"+row);
+                resultMatrix[row][column] = s.nextDouble();
+                column++;
+                if(column==5){
+                    column=0;
+                    row++;
                 }
-                str = str.replaceAll("[,\\[\\]]","");
-                System.out.println(str+"-"+column+"-"+row);
-                simMatrix[column][row] = Double.valueOf(str);
-                row++;
             }
-            System.out.println(Arrays.deepToString(simMatrix));
+            //System.out.println(Arrays.deepToString(simMatrix));
             s.close();
             // At this point all dead cells are 0 and all live are 1
         } catch (IOException i) {
             System.out.println("Problems..");
 
         }
-        MatlabConnector matlabConnector=new MatlabConnector();
-        //matlabConnector.runFRECCA();
+        ClusterEvaluator clusterEvaluator=new ClusterEvaluator();
+        ContingencyTable contingencyTable=new ContingencyTable(459,5);
+        contingencyTable.setData(resultMatrix);
+        clusterEvaluator.setData(contingencyTable);
+        System.out.println(clusterEvaluator.getPurity());
+
+        System.exit(2);
+
+
+        //read simmatrix
+        double simMatrix[][] = new double[459][459];
+        try {
+            Scanner s = new Scanner(new File("SimMatrix.txt"));
+            int row=0;
+            int column=0;
+            while (s.hasNext()) {
+                String str=s.next();
+                //if(str.contains("[")){
+                   // column++;
+                    //row=0;
+                //}
+                str = str.replaceAll("[,\\[\\]]","");
+                //System.out.println(str+"-"+column+"-"+row);
+                simMatrix[row][column] = Double.valueOf(str);
+                column++;
+                if(column==459){
+                    column=0;
+                    row++;
+                }
+            }
+            //System.out.println(Arrays.deepToString(simMatrix));
+            s.close();
+            // At this point all dead cells are 0 and all live are 1
+        } catch (IOException i) {
+            System.out.println("Problems..");
+
+        }
+
+        MatlabProxyFactoryOptions options =
+                new MatlabProxyFactoryOptions.Builder()
+                        .setUsePreviouslyControlledSession(true)
+                        .build();
+
+
+        MatlabProxyFactory factory = new MatlabProxyFactory(options);
+        MatlabProxy proxy = factory.getProxy();
+
+        // call user-defined function (must be on the path)
+
+        String matrixForMatlab="";
+        for(int i=0;i<459;i++){
+            for(int j=0;j<459;j++){
+                if(j==0)matrixForMatlab=matrixForMatlab.concat(" ");
+                matrixForMatlab=matrixForMatlab.concat(String.valueOf(simMatrix[i][j]));
+                if(j!=458)matrixForMatlab=matrixForMatlab.concat(" ");
+                else matrixForMatlab=matrixForMatlab.concat(";");
+            }
+        }
+
+
+        proxy.eval("addpath('D:\\Thesis\\IntelliNote\\')");
+        proxy.eval("n_clusters=5;");
+        proxy.eval("similarities=["+ matrixForMatlab +"];");
+        //proxy.feval("frecca(similarities,n_clusters)");
+        proxy.eval("frecca(similarities,n_clusters)");
+        proxy.eval("rmpath('D:\\Thesis\\IntelliNote\\')");
+        //proxy.setVariable("similarities",simMatrix);
+        //proxy.setVariable("n_clusters",5);
+        //proxy.feval("D:\\Thesis\\IntelliNote\\frecca.m");
+
+        System.out.println("ans "+ proxy.getVariable("ans").toString());
+        double[][] mems=(double[][])proxy.getVariable("mems");
+        double[][] pj=(double[][])proxy.getVariable("pj");
+        double[] cij=(double[])proxy.getVariable("cij");
+        // close connection
+        proxy.disconnect();
+
+        //Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
+        //MatlabEngine ml = eng.get();
+        //ml.putVariable("SIMILARITIES",simMatrix);
+        //ml.putVariable("N_CLUSTERS",5);
+        //Scanner scanner=new Scanner(new File("frecca.m"));
+        //ml.feval(scanner.toString());
+        //String function="";
+        //while(scanner.hasNextLine()){
+        //  function=function.concat(scanner.nextLine());
+        //ml.feval(scanner.nextLine());
+        //}
+        //ml.feval(function);
+        //double[][] mems=ml.getVariable("MEMS");
+        //double[][] pj=ml.getVariable("PJ");
+        //double[] cij=ml.getVariable("CIJ");
+        System.out.println("mems "+ Arrays.deepToString(mems));
+        System.out.println("pj "+ Arrays.deepToString(pj));
+        System.out.println("cij "+ Arrays.toString(cij));
+        // Disconnect from the MATLAB session
+        //ml.disconnect();
 
         System.exit(1);
         File reutersDir = new File("D:\\Thesis\\IntelliNote\\src\\main\\resources\\reuters-21578\\data");

@@ -1,11 +1,9 @@
 <component name="libraryTable">
-  <library name="Jama-1.0.3">
+  <library name="ClusterEvaluator">
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/engine.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
     </CLASSES>
     <JAVADOC>
@@ -15,7 +13,6 @@
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
     </NATIVE>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
     </SOURCES>
     <jarDirectory url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" recursive="false" />
