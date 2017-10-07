@@ -29,7 +29,7 @@ public class Document {
     }
 
 
-    public ArrayList getSentences() {
+    public ArrayList<Sentence> getSentences() {
         return sentences;
     }
 
