@@ -1,11 +1,10 @@
-/**
+package demos; /**
  * The program provides a sample for Java Engine functions. It creates a matrix and squares the values greater than 5.
  * Copyright 2016 The MathWorks, Inc.
  */
 
 import com.mathworks.engine.MatlabEngine;
 
-import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 

@@ -1,5 +1,5 @@
-/**
- * The EngineGUIDemo uses a Swing UI to take an input number and calculate the factorial of a the given number.
+package demos; /**
+ * The demos.EngineGUIDemo uses a Swing UI to take an input number and calculate the factorial of a the given number.
  * Copyright 2016 The MathWorks, Inc.
  */
 

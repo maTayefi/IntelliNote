@@ -1,3 +1,5 @@
+package measures;
+
 public class Criteria {
     double purity;
     double entropy;

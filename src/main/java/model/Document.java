@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class Document {
     }
 
 
-    public ArrayList<Sentence> getSentences() {
+    public ArrayList getSentences() {
         return sentences;
     }
 

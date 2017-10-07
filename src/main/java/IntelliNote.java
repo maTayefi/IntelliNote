@@ -1,8 +1,3 @@
-import Model.Document;
-//import org.apache.jena.sparql.algebra.Op;
-import Model.Sentence;
-import Model.Token;
-import com.mathworks.engine.MatlabEngine;
 import com.uttesh.exude.ExudeData;
 import com.uttesh.exude.exception.InvalidDataException;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
@@ -12,22 +7,24 @@ import edu.cmu.lti.ws4j.impl.JiangConrath;
 import matlabcontrol.*;
 import measures.ClusterEvaluator;
 import measures.ContingencyTable;
+import model.Document;
+import model.Sentence;
+import model.Token;
 import opennlp.tools.cmdline.postag.POSModelLoader;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSSample;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
-import org.apache.lucene.util.Version;
 import reuters21578.ExtractReuters;
+import utilities.OpenNLPUtil;
+
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//import org.apache.jena.sparql.algebra.Op;
 
 /**
  * Created by maTayefi on 3/5/2017.
@@ -39,16 +36,16 @@ public class IntelliNote{
     private static final Logger fLogger = Logger.getLogger("My Logger");
 
     public static void main(String[] args) throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException {
-        Double[][] resultMatrix=new Double[459][5];
+        Double[][] resultMatrix = new Double[459][6];
         try {
-            Scanner s = new Scanner(new File("answerForRueterswithN5.txt"));
+            Scanner s = new Scanner(new File("answerForRueterswithN6.txt"));
             int column=0;
             int row=0;
             while (s.hasNextDouble()) {
                 //System.out.println(str+"-"+column+"-"+row);
                 resultMatrix[row][column] = s.nextDouble();
                 column++;
-                if(column==5){
+                if (column == 6) {
                     column=0;
                     row++;
                 }
@@ -61,11 +58,13 @@ public class IntelliNote{
 
         }
         ClusterEvaluator clusterEvaluator=new ClusterEvaluator();
-        ContingencyTable contingencyTable=new ContingencyTable(459,5);
+        ContingencyTable contingencyTable = new ContingencyTable(459, 6);
         contingencyTable.setData(resultMatrix);
         clusterEvaluator.setData(contingencyTable);
-        System.out.println(clusterEvaluator.getPurity());
-
+        System.out.println("Purity: " + clusterEvaluator.getPurity());
+        System.out.println("FMeasure: " + clusterEvaluator.getFMeasure());
+        System.out.println("VMeasure: " + clusterEvaluator.getVMeasure(0.01));
+        System.out.println("RandIndex: " + clusterEvaluator.getRandIndex());
         System.exit(2);
 
 
@@ -78,8 +77,8 @@ public class IntelliNote{
             while (s.hasNext()) {
                 String str=s.next();
                 //if(str.contains("[")){
-                   // column++;
-                    //row=0;
+                // column++;
+                //row=0;
                 //}
                 str = str.replaceAll("[,\\[\\]]","");
                 //System.out.println(str+"-"+column+"-"+row);
@@ -121,7 +120,7 @@ public class IntelliNote{
 
 
         proxy.eval("addpath('D:\\Thesis\\IntelliNote\\')");
-        proxy.eval("n_clusters=5;");
+        proxy.eval("n_clusters=6;");
         proxy.eval("similarities=["+ matrixForMatlab +"];");
         //proxy.feval("frecca(similarities,n_clusters)");
         proxy.eval("frecca(similarities,n_clusters)");
@@ -159,6 +158,8 @@ public class IntelliNote{
         //ml.disconnect();
 
         System.exit(1);
+
+
         File reutersDir = new File("D:\\Thesis\\IntelliNote\\src\\main\\resources\\reuters-21578\\data");
 
 		/*
@@ -262,6 +263,7 @@ public class IntelliNote{
         Set<String> distinctNonStpWrdsInTwoSntncs=new HashSet<>();
         System.out.println("docs size"+documents.size());
         for(int i=0;i<documents.size();i++){
+            //d-matrix ro inja besaaz
             Vector<Double> vIn=new Vector<>();
             vIn.setSize(documents.size());
             vector.add(i,vIn);

@@ -1,4 +1,4 @@
-/**
+package connectors; /**
  * Created by maTayefi on 2/28/2017.
  */
 /**
@@ -17,13 +17,6 @@
   http://dev.evernote.com/documentation/cloud/
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.security.MessageDigest;
-import java.util.Iterator;
-import java.util.List;
-
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
@@ -34,18 +27,19 @@ import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.error.EDAMUserException;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
-import com.evernote.edam.type.Data;
-import com.evernote.edam.type.Note;
-import com.evernote.edam.type.NoteSortOrder;
-import com.evernote.edam.type.Notebook;
-import com.evernote.edam.type.Resource;
-import com.evernote.edam.type.ResourceAttributes;
-import com.evernote.edam.type.Tag;
+import com.evernote.edam.type.*;
 import com.evernote.thrift.transport.TTransportException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.security.MessageDigest;
+import java.util.Iterator;
+import java.util.List;
 
 public class EvernoteBridge {
 

@@ -1,6 +1,7 @@
+package utilities;
+
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
-import opennlp.tools.util.InvalidFormatException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +14,8 @@ public class OpenNLPUtil {
     public OpenNLPUtil(){
 
     }
-    public  String[] SentenceDetect(String text) throws InvalidFormatException,
+
+    public String[] SentenceDetect(String text) throws
             IOException {
 
         // always start with a model, a model is learned from training data
