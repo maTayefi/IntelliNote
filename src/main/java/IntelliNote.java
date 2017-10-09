@@ -7,6 +7,7 @@ import matlabcontrol.MatlabInvocationException;
 import utilities.Utility;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static utilities.Utility.*;
 
@@ -16,7 +17,7 @@ import static utilities.Utility.*;
  */
 public class IntelliNote{
 
-    public static void main(String[] args) throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException {
+    public static void main(String[] args) throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {
 
         switch (Utility.current_stage) {
             case getting_data:
@@ -40,7 +41,7 @@ public class IntelliNote{
         }
     }
 
-    private static void getting_data() throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException {
+    private static void getting_data() throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {
         //Reuters
         if (input == 0) {
             ReutersHandler.createModel();
@@ -53,10 +54,21 @@ public class IntelliNote{
         process_data();
     }
 
-    private static void process_data() throws MatlabInvocationException, MatlabConnectionException {
-        PrepareClustering.createVectorOfVectors();
-        PrepareClustering.createSimilarityMatrix();
-        MatlabConnector.runClustering();
+    private static void process_data() throws MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {
+        System.out.println("process_data");
+        if (Utility.current_subStage == 0) {
+            PrepareClustering.createVectorOfVectors();
+            current_subStage = 1;
+        }
+        if (current_subStage == 1) {
+            PrepareClustering.createSimilarityMatrix();
+            current_subStage = 2;
+        }
+        if (current_subStage == 2) {
+            System.out.println("runClustering");
+            MatlabConnector.runClustering();
+            current_subStage = 0;
+        }
         current_stage = showing_result;
         showing_result();
     }

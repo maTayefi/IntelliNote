@@ -1,18 +1,27 @@
 package connectors;
 
+import com.mathworks.engine.MatlabEngine;
 import matlabcontrol.*;
+import utilities.Utility;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+
+import static utilities.Utility.fLogger;
 
 /**
  * Created by maTayefi on 2/28/2017.
  */
 public class MatlabConnector {
 
-    public static void runClustering() throws MatlabConnectionException, MatlabInvocationException {
+    public static void runClustering() throws MatlabConnectionException, MatlabInvocationException, ExecutionException, InterruptedException {
 
         //read simmatrix
         double simMatrix[][] = new double[459][459];
@@ -43,17 +52,6 @@ public class MatlabConnector {
 
         }
 
-        MatlabProxyFactoryOptions options =
-                new MatlabProxyFactoryOptions.Builder()
-                        .setUsePreviouslyControlledSession(true)
-                        .build();
-
-
-        MatlabProxyFactory factory = new MatlabProxyFactory(options);
-        MatlabProxy proxy = factory.getProxy();
-
-        // call user-defined function (must be on the path)
-
         String matrixForMatlab = "";
         for (int i = 0; i < 459; i++) {
             for (int j = 0; j < 459; j++) {
@@ -64,43 +62,97 @@ public class MatlabConnector {
             }
         }
 
+        if (Utility.matlabConnectionMethod == 0) {
+            MatlabProxyFactoryOptions options =
+                    new MatlabProxyFactoryOptions.Builder()
+                            .setUsePreviouslyControlledSession(true)
+                            .build();
 
-        proxy.eval("addpath('D:\\Thesis\\IntelliNote\\')");
-        proxy.eval("n_clusters=6;");
-        proxy.eval("similarities=[" + matrixForMatlab + "];");
-        //proxy.feval("frecca(similarities,n_clusters)");
-        proxy.eval("frecca(similarities,n_clusters)");
-        proxy.eval("rmpath('D:\\Thesis\\IntelliNote\\')");
-        //proxy.setVariable("similarities",simMatrix);
-        //proxy.setVariable("n_clusters",5);
-        //proxy.feval("D:\\Thesis\\IntelliNote\\frecca.m");
+            MatlabProxyFactory factory = new MatlabProxyFactory(options);
+            MatlabProxy proxy = factory.getProxy();
 
-        System.out.println("ans " + proxy.getVariable("ans").toString());
-        double[][] mems = (double[][]) proxy.getVariable("mems");
-        double[][] pj = (double[][]) proxy.getVariable("pj");
-        double[] cij = (double[]) proxy.getVariable("cij");
-        // close connection
-        proxy.disconnect();
 
-        //Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
-        //MatlabEngine ml = eng.get();
-        //ml.putVariable("SIMILARITIES",simMatrix);
-        //ml.putVariable("N_CLUSTERS",5);
-        //Scanner scanner=new Scanner(new File("frecca.m"));
-        //ml.feval(scanner.toString());
-        //String function="";
-        //while(scanner.hasNextLine()){
-        //  function=function.concat(scanner.nextLine());
-        //ml.feval(scanner.nextLine());
-        //}
-        //ml.feval(function);
-        //double[][] mems=ml.getVariable("MEMS");
-        //double[][] pj=ml.getVariable("PJ");
-        //double[] cij=ml.getVariable("CIJ");
-        System.out.println("mems " + Arrays.deepToString(mems));
-        System.out.println("pj " + Arrays.deepToString(pj));
-        System.out.println("cij " + Arrays.toString(cij));
-        // Disconnect from the MATLAB session
-        //ml.disconnect();
+            proxy.eval("addpath('D:\\Thesis\\IntelliNote\\src\\main\\resources\\')");
+            proxy.eval("n_clusters=6;");
+            proxy.eval("similarities=[" + matrixForMatlab + "];");
+            //proxy.feval("frecca(similarities,n_clusters)");
+            proxy.eval("frecca(similarities,n_clusters)");
+            proxy.eval("rmpath('D:\\Thesis\\IntelliNote\\')");
+            //proxy.setVariable("similarities",simMatrix);
+            //proxy.setVariable("n_clusters",5);
+            //proxy.feval("D:\\Thesis\\IntelliNote\\frecca.m");
+
+            System.out.println("ans " + proxy.getVariable("ans").toString());
+            double[][] mems = (double[][]) proxy.getVariable("mems");
+            double[][] pj = (double[][]) proxy.getVariable("pj");
+            double[] cij = (double[]) proxy.getVariable("cij");
+
+            System.out.println("mems " + Arrays.deepToString(mems));
+            System.out.println("pj " + Arrays.deepToString(pj));
+            System.out.println("cij " + Arrays.toString(cij));
+            proxy.disconnect();
+
+            //Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
+            //MatlabEngine ml = eng.get();
+            //ml.putVariable("SIMILARITIES",simMatrix);
+            //ml.putVariable("N_CLUSTERS",5);
+            //Scanner scanner=new Scanner(new File("frecca.m"));
+            //ml.feval(scanner.toString());
+            //String function="";
+            //while(scanner.hasNextLine()){
+            //  function=function.concat(scanner.nextLine());
+            //ml.feval(scanner.nextLine());
+            //}
+            //ml.feval(function);
+            //double[][] mems=ml.getVariable("MEMS");
+            //double[][] pj=ml.getVariable("PJ");
+            //double[] cij=ml.getVariable("CIJ");
+            // Disconnect from the MATLAB session
+            //ml.disconnect();
+
+        } else if (Utility.matlabConnectionMethod == 1) {
+            Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
+            MatlabEngine ml = eng.get();
+            ml.putVariableAsync("similarities", simMatrix);
+            ml.putVariableAsync("n_clusters", 6);
+
+            ml.eval("addpath('D:\\Thesis\\IntelliNote\\src\\main\\resources\\')");
+            //khat be khat behesh bedeh ba ml.eval (for benevis vasash)
+            //String fevalOut=ml.feval("frecca",(Object) simMatrix,6);
+
+            ml.eval("[mems, pj, cij] =frecca(similarities,n_clusters);");
+            //ml.eval("rmpath('D:\\Thesis\\IntelliNote\\src\\main\\resources\\')");
+
+            double[][] cij = ml.getVariable("cij");
+            //1*n
+            try (
+                    OutputStreamWriter writer = new OutputStreamWriter(
+                            new FileOutputStream("cij.txt"), "UTF-8")
+            ) {
+                writer.write(Arrays.deepToString(cij));
+            } catch (IOException ex) {
+                fLogger.log(Level.SEVERE, "Cannot perform output.", ex);
+            }
+
+            double[][] mems = ml.getVariable("mems");
+            try (
+                    OutputStreamWriter writer = new OutputStreamWriter(
+                            new FileOutputStream("mems.txt"), "UTF-8")
+            ) {
+                writer.write(Arrays.deepToString(mems));
+            } catch (IOException ex) {
+                fLogger.log(Level.SEVERE, "Cannot perform output.", ex);
+            }
+            double[] pj = ml.getVariable("pj");
+            try (
+                    OutputStreamWriter writer = new OutputStreamWriter(
+                            new FileOutputStream("pj.txt"), "UTF-8")
+            ) {
+                writer.write(Arrays.toString(pj));
+            } catch (IOException ex) {
+                fLogger.log(Level.SEVERE, "Cannot perform output.", ex);
+            }
+            ml.disconnectAsync();
+        }
     }
 }

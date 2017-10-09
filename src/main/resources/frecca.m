@@ -87,14 +87,14 @@ similarities = Dsqt * similarities * Dsqt;
 % Storage for mixture probabilities 
 cij = zeros(N, n_clusters);                 % eig centrality of object i 
                                             % in cluster j
-pj = ones(1, n_clusters)/n_clusters;        % cluster priors
-pj_equal = ones(1, n_clusters)/n_clusters;  % equal cluster priors 
+pj = ones(1, n_clusters) / double(n_clusters);        % cluster priors
+pj_equal = ones(1, n_clusters) / double(n_clusters);  % equal cluster priors
                                             % (used when biasing towards 
                                             % equal-sized clusters - see below)
 mems = zeros(N, n_clusters);                % cluster membership values
 
 % Initialise membership values to small random values about equal prior
-mems = randn(N, n_clusters)/1000 + 1.0/n_clusters;
+mems = randn(N, n_clusters) / 1000 + 1.0 / double(n_clusters);
 mems = mems./repmat(sum(mems,2), 1, n_clusters);  % row normalize
 
 %%% EXPECTATION MAXIMIZATION loop
@@ -114,7 +114,7 @@ while (residual >= 1e-5) && (k <= max_loop_iters)
         % calculate and store eigenvector centrality value
         cij(:,j) = EV_Centrality(H, alpha, epsilon); 
     end
-
+% disp(cij);
     %%% --Maximization step--
     % Calculate new membership values
     tmp = cij .* repmat(pj, N, 1);

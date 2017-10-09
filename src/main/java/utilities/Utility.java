@@ -16,11 +16,17 @@ public class Utility {
 
     public static boolean[] levelsInClustering = new boolean[4];
 
-    public static int current_stage = 0;
+    public static int current_stage = 1;
+    public static int current_subStage = 2;
     //int current_subStage=0;
 
     public static final int getting_data = 0;
     public static final int process_data = 1;
+    //////
+    public static final int createVectorOfVectors = 0;
+    public static final int createSimilarityMatrix = 1;
+    public static final int runClustering = 2;
+    //////
     public static final int showing_result = 2;
     public static final int getting_user_changes = 3;
     public static final int apply_changes = 4;
@@ -31,6 +37,10 @@ public class Utility {
 
     public static final Logger fLogger = Logger.getLogger("My Logger");
 
+    //0:matlabcontrol
+    //1:matlab engine
+    //2: vnc, server ,...
+    public static int matlabConnectionMethod = 1;
     public static int currentSize;
 
     public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
