@@ -91,25 +91,6 @@ public class MatlabConnector {
             System.out.println("pj " + Arrays.deepToString(pj));
             System.out.println("cij " + Arrays.toString(cij));
             proxy.disconnect();
-
-            //Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
-            //MatlabEngine ml = eng.get();
-            //ml.putVariable("SIMILARITIES",simMatrix);
-            //ml.putVariable("N_CLUSTERS",5);
-            //Scanner scanner=new Scanner(new File("frecca.m"));
-            //ml.feval(scanner.toString());
-            //String function="";
-            //while(scanner.hasNextLine()){
-            //  function=function.concat(scanner.nextLine());
-            //ml.feval(scanner.nextLine());
-            //}
-            //ml.feval(function);
-            //double[][] mems=ml.getVariable("MEMS");
-            //double[][] pj=ml.getVariable("PJ");
-            //double[] cij=ml.getVariable("CIJ");
-            // Disconnect from the MATLAB session
-            //ml.disconnect();
-
         } else if (Utility.matlabConnectionMethod == 1) {
             Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
             MatlabEngine ml = eng.get();

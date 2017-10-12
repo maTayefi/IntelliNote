@@ -24,8 +24,6 @@ public class PrepareClustering {
     public static Vector<Vector<Double>> vector = new Vector<>();
 
     public static void createVectorOfVectors() {
-
-
         vector.setSize(Utility.documents.size());
         Set<String> distinctNonStpWrdsInTwoSntncs = new HashSet<>();
         System.out.println("docs size" + Utility.documents.size());

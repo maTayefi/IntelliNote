@@ -3,10 +3,11 @@ package utilities;
 import model.Document;
 
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 public class Utility {
-    public int[][] d_matrix;
+    public Vector<Vector<Boolean>> d_matrix;
     //0:Local - Reuters
     //1:Evernote Account - Reuters
     //2:Evernote Account - Sample Dataset
@@ -16,8 +17,8 @@ public class Utility {
 
     public static boolean[] levelsInClustering = new boolean[4];
 
-    public static int current_stage = 1;
-    public static int current_subStage = 2;
+    public static int current_stage = 0;
+    public static int current_subStage = 0;
     //int current_subStage=0;
 
     public static final int getting_data = 0;
