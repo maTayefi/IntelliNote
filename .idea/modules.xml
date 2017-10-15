@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/src/main/java/data_process/feature_selection/feast/FEAST.iml" filepath="$PROJECT_DIR$/src/main/java/data_process/feature_selection/feast/FEAST.iml" />
       <module fileurl="file://$PROJECT_DIR$/IntelliNote.iml" filepath="$PROJECT_DIR$/IntelliNote.iml" />
     </modules>
   </component>

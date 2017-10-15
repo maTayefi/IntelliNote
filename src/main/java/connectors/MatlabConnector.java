@@ -95,7 +95,7 @@ public class MatlabConnector {
             Future<MatlabEngine> eng = MatlabEngine.startMatlabAsync();
             MatlabEngine ml = eng.get();
             ml.putVariableAsync("similarities", simMatrix);
-            ml.putVariableAsync("n_clusters", 6);
+            ml.putVariableAsync("n_clusters", Utility.no_of_clusters);
 
             ml.eval("addpath('D:\\Thesis\\IntelliNote\\src\\main\\resources\\')");
             //khat be khat behesh bedeh ba ml.eval (for benevis vasash)

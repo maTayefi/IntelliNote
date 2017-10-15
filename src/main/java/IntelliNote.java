@@ -1,6 +1,5 @@
 import clustering.DetermineNumberOfClusters;
 import com.uttesh.exude.exception.InvalidDataException;
-import connectors.MatlabConnector;
 import connectors.ReutersHandler;
 import data_process.PrepareClustering;
 import matlabcontrol.MatlabConnectionException;
@@ -57,7 +56,6 @@ public class IntelliNote{
 
     private static void process_data() throws MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {
         //todo level bandihaye clustering o entekhab tedad o jaaye level ha
-        //todo 1 : d-matrix ro besaaz vase inke ba'desh n-1, n+1 esh ro bedi be sihoulete
         System.out.println("process_data");
         if (Utility.current_subStage == 0) {
             PrepareClustering.createVectorOfVectors();
@@ -70,9 +68,9 @@ public class IntelliNote{
         //todo 2 ta class determine number of clusters o similarity (ba merge dbpedia o in chizha) ro ghablesh ejra kon
         if (current_subStage == 2) {
             DetermineNumberOfClusters determineNumberOfClusters = new DetermineNumberOfClusters();
-            System.out.println(determineNumberOfClusters.dMatrixMethod());
+            //System.out.println(determineNumberOfClusters.dMatrixMethod());
             System.out.println("runClustering");
-            MatlabConnector.runClustering();
+            //MatlabConnector.runClustering();
             current_subStage = 0;
         }
         current_stage = showing_result;

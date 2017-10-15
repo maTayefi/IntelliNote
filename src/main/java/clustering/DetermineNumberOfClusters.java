@@ -1,5 +1,8 @@
 package clustering;
 
+import connectors.MatlabConnector;
+import matlabcontrol.MatlabConnectionException;
+import matlabcontrol.MatlabInvocationException;
 import model.Document;
 import model.Sentence;
 import model.Token;
@@ -7,6 +10,7 @@ import utilities.Utility;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class DetermineNumberOfClusters {
     //ba'dan ontology sh kon
@@ -14,6 +18,13 @@ public class DetermineNumberOfClusters {
     private Set<String> allTermsInDocuments = new HashSet<>();
     private Set<String> currentDocumentTerms = new HashSet<>();
     private int t = 0;
+
+    public int calcNumOfClusters() throws InterruptedException, ExecutionException, MatlabConnectionException, MatlabInvocationException {
+        Utility.no_of_clusters = dMatrixMethod();
+        MatlabConnector.runClustering();
+        Double[][] mems = Utility.readMems();
+
+    }
     public int dMatrixMethod() {
         for (Document doc : Utility.documents) {
             for (Sentence sentence : doc.getSentences()) {
