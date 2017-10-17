@@ -96,7 +96,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>LATEST</version>
-        </dependency><!--
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>cytoscape</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <!--
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>

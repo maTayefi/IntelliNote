@@ -5,6 +5,7 @@
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
+      <root url="file://E:/Cytoscape_v3.5.1/framework/lib" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
@@ -14,8 +15,11 @@
     </NATIVE>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" />
+      <root url="file://E:/Cytoscape_v3.5.1/framework/lib" />
     </SOURCES>
+    <jarDirectory url="file://E:/Cytoscape_v3.5.1/framework/lib" recursive="false" />
     <jarDirectory url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" recursive="false" />
+    <jarDirectory url="file://E:/Cytoscape_v3.5.1/framework/lib" recursive="false" type="SOURCES" />
     <jarDirectory url="jar://$PROJECT_DIR$/lib/ClusterEvaluator.jar!/" recursive="false" type="SOURCES" />
   </library>
 </component>

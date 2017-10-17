@@ -23,7 +23,7 @@ public class DetermineNumberOfClusters {
         Utility.no_of_clusters = dMatrixMethod();
         MatlabConnector.runClustering();
         Double[][] mems = Utility.readMems();
-
+        return 5;
     }
     public int dMatrixMethod() {
         for (Document doc : Utility.documents) {

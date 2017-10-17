@@ -1,3 +1,4 @@
+import clusterMaker.ClusterMaker;
 import clustering.DetermineNumberOfClusters;
 import com.uttesh.exude.exception.InvalidDataException;
 import connectors.ReutersHandler;
@@ -18,7 +19,10 @@ import static utilities.Utility.*;
 public class IntelliNote{
 
     public static void main(String[] args) throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {
-
+        //todo 0 - 0 ta 100 esh ro ba khodesh bero (distanceMatrix, Cluster, Base Matrix , ...)
+        //todo 1 similarity matrix et ro tabdil kon be distance matrix va ba label ha bede be Silhouette, ya inke Base matrix ro bede behesh
+        ClusterMaker clusterMaker = new ClusterMaker();
+        /*
         switch (Utility.current_stage) {
             case getting_data:
                 getting_data();
@@ -38,7 +42,7 @@ public class IntelliNote{
             default:
                 getting_data();
                 break;
-        }
+        }*/
     }
 
     private static void getting_data() throws IOException, InvalidDataException, MatlabInvocationException, MatlabConnectionException, ExecutionException, InterruptedException {

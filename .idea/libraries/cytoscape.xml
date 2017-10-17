@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cytoscape">
+    <CLASSES>
+      <root url="jar://E:/Program/Cytoscape_2_8_3_windows_64bit/cytoscape.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
